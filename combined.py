@@ -30,6 +30,7 @@ from nltk.corpus import wordnet
 nltk.download('sentiwordnet')
 from nltk.stem import WordNetLemmatizer
 
+#Problem 1
 wordnet_lemmatizer = WordNetLemmatizer()
 
 start = timeit.default_timer()
@@ -176,12 +177,9 @@ def matching(country,textFileList):
     print()
     mark = (positive_counter / (positive_counter + negative_counter + neutral_counter)) * 100
     return mark
-    # return ()
 
 
 # Problem 2
-
-
 def plotShortestPath(data):
     store = pd.read_csv(data)
 
