@@ -128,47 +128,48 @@ def readFile(wordFile):
     return data
 
 
-def matching(textFile):
+def matching(country,textFileList):
     global positive_counter, negative_counter, neutral_counter
     positive_counter = 0
     negative_counter = 0
     neutral_counter = 0
-    data = pd.read_csv(textFile, sep='t')
-    print(data.head())
-    mydata = data.drop('Unnamed: 0', axis=1)
-    print(mydata.head())
+    for j in range(len(textFileList)):
+        textFile = textFileList[j]
+        data = pd.read_csv(textFile, sep='t')
+        # print(data.head())
+        mydata = data.drop('Unnamed: 0', axis=1)
+        # print(mydata.head())
 
-    # clean text
-    mydata['Cleaned words'] = mydata['words'].apply(clean)
-    print(mydata.head())
+        # clean text
+        mydata['Cleaned words'] = mydata['words'].apply(clean)
+        # print(mydata.head())
 
-    # POS tagged and remove stop words
-    mydata['POS tagged'] = mydata['Cleaned words'].apply(token_stop_pos)
-    print(mydata.head())
+        # POS tagged and remove stop words
+        mydata['POS tagged'] = mydata['Cleaned words'].apply(token_stop_pos)
+        # print(mydata.head())
 
-    mydata['Lemma'] = mydata['POS tagged'].apply(lemmatize)
-    print(mydata.head())
+        mydata['Lemma'] = mydata['POS tagged'].apply(lemmatize)
+        # print(mydata.head())
 
-    print(len(mydata.index))
-    positive_words = readFile('positive word.txt')
-    negative_words = readFile('negative word.txt')
-    i = 0
-    while i < len(mydata.index):
-        val = mydata['Lemma'].values[i]
-        if pd.isnull(mydata.loc[i, 'Lemma']):
-            i += 1
-            continue
-        else:
-            i += 1
-            if (KMPSearch(val, positive_words)):
-                positive_counter += 1
-            elif (KMPSearch(val, negative_words)):
-                negative_counter += 1
+        # print(len(mydata.index))
+        positive_words = readFile('positive word.txt')
+        negative_words = readFile('negative word.txt')
+        i = 0
+        while i < len(mydata.index):
+            val = mydata['Lemma'].values[i]
+            if pd.isnull(mydata.loc[i, 'Lemma']):
+                i += 1
+                continue
             else:
-                neutral_counter += 1
+                i += 1
+                if (KMPSearch(val, positive_words)):
+                    positive_counter += 1
+                elif (KMPSearch(val, negative_words)):
+                    negative_counter += 1
+                else:
+                    neutral_counter += 1
 
-    words = [positive_counter, negative_counter, neutral_counter]
-
+    print(country)
     print("Positive words: ", positive_counter)
     print("Negative words: ", negative_counter)
     print("Neutral words: ", neutral_counter)
@@ -412,13 +413,20 @@ def mergeSort(country, sentiment, distance, total):
 # List to store country name
 country_list = ["France", "Malaysia", "Singapore", "United Kingdom", "United States"]
 
+#List to store country article file
+MY_list = ["MY.txt","MY2.txt","MY3.txt","MY4.txt","MY5.txt"]
+SG_list = ["SG.txt","SG2.txt","SG3.txt","SG4.txt","SG5.txt"]
+UK_list = ["UK.txt","UK2.txt","UK3.txt","UK4.txt","UK5.txt"]
+US_list = ["US.txt","US2.txt","US3.txt","US4.txt","US5.txt"]
+FR_list = ["FR.txt","FR2.txt","FR3.txt","FR4.txt","FR5.txt"]
+
 # Store the number of positive words (good local economic and social situation) of each country in sentiment_list
 sentiment_list = list()
-sentiment_list.append(matching('FR.txt'))
-sentiment_list.append(matching('MY.txt'))
-sentiment_list.append(matching('SG.txt'))
-sentiment_list.append(matching('UK.txt'))
-sentiment_list.append(matching('US.txt'))
+sentiment_list.append(matching("France",FR_list))
+sentiment_list.append(matching("Malaysia",MY_list))
+sentiment_list.append(matching("Singapore",SG_list))
+sentiment_list.append(matching("United Kingdom",UK_list))
+sentiment_list.append(matching("United States",US_list))
 
 # Store the shortest distance of each country (optimal delivery) in distance_list
 distance_list = list()
