@@ -410,7 +410,6 @@ def mergeSort(country, sentiment, distance, total):
             j += 1
             k += 1
 
-
 # List to store country name
 country_list = ["France", "Malaysia", "Singapore", "United Kingdom", "United States"]
 
