@@ -173,6 +173,7 @@ def matching(country,textFileList):
     print("Positive words: ", positive_counter)
     print("Negative words: ", negative_counter)
     print("Neutral words: ", neutral_counter)
+    print()
     mark = (positive_counter / (positive_counter + negative_counter + neutral_counter)) * 100
     return mark
     # return ()
